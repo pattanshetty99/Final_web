@@ -1,0 +1,11 @@
+flask
+numpy
+pandas
+scikit-learn
+xgboost
+torch
+torchvision
+opencv-python-headless
+dlib
+pillow
+werkzeug
