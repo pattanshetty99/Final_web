@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prediction Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>Prediction Result</h1>
+      <p>{{ recs.summary }}</p>
+    </div>
+
+    <div class="card result-grid">
+      <div>
+        <h2>Uploaded Image</h2>
+        <img src="{{ image_url }}" alt="Uploaded image" class="preview-image">
+      </div>
+
+      <div>
+        <h2>Predictions</h2>
+        <div class="prediction-box">
+          <p><strong>Prakriti:</strong> {{ prakriti }}</p>
+          <p><strong>Hairfall:</strong> {{ hairfall }}</p>
+        </div>
+
+        <h3>Prakriti Probabilities</h3>
+        <ul class="prob-list">
+          {% for label, prob in prakriti_probs %}
+            <li>{{ label }} — {{ prob }}%</li>
+          {% endfor %}
+        </ul>
+
+        <h3>Hairfall Probabilities</h3>
+        <ul class="prob-list">
+          {% for label, prob in hairfall_probs %}
+            <li>{{ label }} — {{ prob }}%</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Recommendations</h2>
+
+      <div class="rec-block">
+        <h3>Hairfall interpretation</h3>
+        <ul>
+          {% for item in recs.hairfall_points %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="rec-block">
+        <h3>Diet</h3>
+        <ul>
+          {% for item in recs.diet %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="rec-block">
+        <h3>Lifestyle</h3>
+        <ul>
+          {% for item in recs.lifestyle %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="rec-block">
+        <h3>Hair care</h3>
+        <ul>
+          {% for item in recs.hair_care %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="back-row">
+      <a href="{{ url_for('index') }}" class="btn-secondary">Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>
