@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prakriti + Hairfall Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>Prakriti + Hairfall Prediction App</h1>
+      <p>Paste the questionnaire responses as JSON and upload a face image.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data" class="card">
+      <div class="grid-2">
+        <div>
+          <div class="section-title">
+            <h2>Prakriti Questionnaire JSON</h2>
+            <button type="button" class="small-btn" onclick="fillDemo('prakriti')">Load demo</button>
+          </div>
+          <textarea id="prakriti_json" name="prakriti_json" rows="18" placeholder="Paste Prakriti JSON here">{{ demo_prakriti }}</textarea>
+        </div>
+
+        <div>
+          <div class="section-title">
+            <h2>Hairfall Questionnaire JSON</h2>
+            <button type="button" class="small-btn" onclick="fillDemo('hair')">Load demo</button>
+          </div>
+          <textarea id="hair_json" name="hair_json" rows="18" placeholder="Paste Hairfall JSON here">{{ demo_hair }}</textarea>
+        </div>
+      </div>
+
+      <div class="upload-box">
+        <label for="image">Upload Face Image</label>
+        <input type="file" id="image" name="image" accept=".png,.jpg,.jpeg,.webp" required>
+      </div>
+
+      <button type="submit" class="btn-primary">Predict</button>
+    </form>
+
+    <div class="card note">
+      <h3>How to use</h3>
+      <p>Use the exact questionnaire keys from your dataset. The JSON keys should match the column names used in training.</p>
+      <p>This site uses your saved models from the <code>outputs</code> folder and the dlib landmark file in the project root.</p>
+    </div>
+  </div>
+
+  <script>
+    const demoPrakriti = {{ demo_prakriti|tojson }};
+    const demoHair = {{ demo_hair|tojson }};
+
+    function fillDemo(type) {
+      if (type === 'prakriti') {
+        document.getElementById('prakriti_json').value = JSON.stringify(demoPrakriti, null, 2);
+      } else {
+        document.getElementById('hair_json').value = JSON.stringify(demoHair, null, 2);
+      }
+    }
+  </script>
+</body>
+</html>
